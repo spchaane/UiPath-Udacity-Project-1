@@ -1,0 +1,308 @@
+<Activity mc:Ignorable="sap sap2010" x:Class="Unzip_Folder_And_Sort_Files" xmlns="http://schemas.microsoft.com/netfx/2009/xaml/activities" xmlns:bz="clr-namespace:BalaReva.ZipUnzip;assembly=BalaReva.Zip" xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" xmlns:mva="clr-namespace:Microsoft.VisualBasic.Activities;assembly=System.Activities" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:sap="http://schemas.microsoft.com/netfx/2009/xaml/activities/presentation" xmlns:sap2010="http://schemas.microsoft.com/netfx/2010/xaml/activities/presentation" xmlns:scg="clr-namespace:System.Collections.Generic;assembly=mscorlib" xmlns:ui="http://schemas.uipath.com/workflow/activities" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
+  <x:Members>
+    <x:Property Name="in_Desktop" Type="InArgument(x:String)" />
+  </x:Members>
+  <mva:VisualBasic.Settings>
+    <x:Null />
+  </mva:VisualBasic.Settings>
+  <sap:VirtualizedContainerService.HintSize>2021,2560</sap:VirtualizedContainerService.HintSize>
+  <sap2010:WorkflowViewState.IdRef>Unzip_Folder_And_Sort_Files_1</sap2010:WorkflowViewState.IdRef>
+  <TextExpression.NamespacesForImplementation>
+    <scg:List x:TypeArguments="x:String" Capacity="24">
+      <x:String>System.Activities</x:String>
+      <x:String>System.Activities.Statements</x:String>
+      <x:String>System.Activities.Expressions</x:String>
+      <x:String>System.Activities.Validation</x:String>
+      <x:String>System.Activities.XamlIntegration</x:String>
+      <x:String>Microsoft.VisualBasic</x:String>
+      <x:String>Microsoft.VisualBasic.Activities</x:String>
+      <x:String>System</x:String>
+      <x:String>System.Collections</x:String>
+      <x:String>System.Collections.Generic</x:String>
+      <x:String>System.Data</x:String>
+      <x:String>System.Diagnostics</x:String>
+      <x:String>System.Drawing</x:String>
+      <x:String>System.IO</x:String>
+      <x:String>System.Linq</x:String>
+      <x:String>System.Net.Mail</x:String>
+      <x:String>System.Xml</x:String>
+      <x:String>System.Xml.Linq</x:String>
+      <x:String>System.Windows.Markup</x:String>
+      <x:String>UiPath.Core</x:String>
+      <x:String>UiPath.Core.Activities</x:String>
+      <x:String>System.Text.RegularExpressions</x:String>
+      <x:String>System.Globalization</x:String>
+      <x:String>Microsoft.VisualBasic.CompilerServices</x:String>
+    </scg:List>
+  </TextExpression.NamespacesForImplementation>
+  <TextExpression.ReferencesForImplementation>
+    <scg:List x:TypeArguments="AssemblyReference" Capacity="19">
+      <AssemblyReference>System.Activities</AssemblyReference>
+      <AssemblyReference>Microsoft.VisualBasic</AssemblyReference>
+      <AssemblyReference>mscorlib</AssemblyReference>
+      <AssemblyReference>System.Data</AssemblyReference>
+      <AssemblyReference>System.Data.DataSetExtensions</AssemblyReference>
+      <AssemblyReference>System</AssemblyReference>
+      <AssemblyReference>System.Drawing</AssemblyReference>
+      <AssemblyReference>System.Core</AssemblyReference>
+      <AssemblyReference>System.Xml</AssemblyReference>
+      <AssemblyReference>System.Xml.Linq</AssemblyReference>
+      <AssemblyReference>PresentationFramework</AssemblyReference>
+      <AssemblyReference>WindowsBase</AssemblyReference>
+      <AssemblyReference>PresentationCore</AssemblyReference>
+      <AssemblyReference>System.Xaml</AssemblyReference>
+      <AssemblyReference>UiPath.System.Activities</AssemblyReference>
+      <AssemblyReference>UiPath.UiAutomation.Activities</AssemblyReference>
+      <AssemblyReference>System.ValueTuple</AssemblyReference>
+      <AssemblyReference>System.Memory</AssemblyReference>
+      <AssemblyReference>System.ServiceModel</AssemblyReference>
+    </scg:List>
+  </TextExpression.ReferencesForImplementation>
+  <Sequence sap2010:Annotation.AnnotationText="Workflow will extract the contents of the downloaded project folder and save the file in the current dir.&#xA;&#xA;Pre-Condition: The MoveFolderFromDownloadsToProjectFolder (ie. moving the downloaded zip file from downloads into the project folder on the desktop) workflow executed successfully.&#xA;&#xA;Post-Condition: The files in the Sorting_Annual_Reports_Project folder are sorted  according to their years or null and moved into their corresponding year folders " DisplayName="Unzip the downloaded folder" sap:VirtualizedContainerService.HintSize="2001,2500" sap2010:WorkflowViewState.IdRef="Sequence_1">
+    <Sequence.Variables>
+      <Variable x:TypeArguments="s:String[]" Name="extractedFolder" />
+      <Variable x:TypeArguments="x:String" Name="fileYear" />
+      <Variable x:TypeArguments="x:String" Name="pathToProjectFolder" />
+      <Variable x:TypeArguments="x:String" Name="noYearFilesFolder" />
+      <Variable x:TypeArguments="x:Boolean" Name="folderExits" />
+      <Variable x:TypeArguments="x:String" Name="fileWithNoYear" />
+      <Variable x:TypeArguments="x:String" Name="fileWithYear" />
+      <Variable x:TypeArguments="x:String" Name="withYearFilesFolder" />
+    </Sequence.Variables>
+    <sap:WorkflowViewStateService.ViewState>
+      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+        <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+      </scg:Dictionary>
+    </sap:WorkflowViewStateService.ViewState>
+    <bz:UnZipFile Password="{x:Null}" CodePage="1252" DisplayName="UnZip the Donwloaded Folder" ExtractFolderPath="[in_Desktop+&quot;\Sorting_Annual_Reports_Project&quot;]" ExtractType="Standard" sap:VirtualizedContainerService.HintSize="1959,103" sap2010:WorkflowViewState.IdRef="UnZipFile_1" strZipFile="[in_Desktop+&quot;\Sorting_Annual_Reports_Project\nd340-c1-intro-to-uipath-rpa-project-starter-master.zip&quot;]" />
+    <Assign sap2010:Annotation.AnnotationText="Creates a string array of the names of the files and assign it to FileName string array variable" DisplayName="Assign FileName to Extracted Folder" sap:VirtualizedContainerService.HintSize="1959,117" sap2010:WorkflowViewState.IdRef="Assign_1">
+      <Assign.To>
+        <OutArgument x:TypeArguments="s:String[]">[extractedFolder]</OutArgument>
+      </Assign.To>
+      <Assign.Value>
+        <InArgument x:TypeArguments="s:String[]">[Directory.GetFiles(in_Desktop+"\Sorting_Annual_Reports_Project\nd340-c1-intro-to-uipath-rpa-project-starter-master")]</InArgument>
+      </Assign.Value>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </Assign>
+    <ui:ForEach x:TypeArguments="x:Object" CurrentIndex="{x:Null}" sap2010:Annotation.AnnotationText="It will loop at each and every file inside the FileNames folder reading their names to be used for evaluation and sorting the files." DisplayName="For Each file in FileNames (Unzipped Folder)" sap:VirtualizedContainerService.HintSize="1959,2021" sap2010:WorkflowViewState.IdRef="ForEach`1_1" Values="[extractedFolder]">
+      <ui:ForEach.Body>
+        <ActivityAction x:TypeArguments="x:Object">
+          <ActivityAction.Argument>
+            <DelegateInArgument x:TypeArguments="x:Object" Name="file" />
+          </ActivityAction.Argument>
+          <Sequence sap2010:Annotation.AnnotationText="FileYear variable will be assigned to the string &quot;yyyy&quot; year obtained from the file named and it will be used to evaluate whether the file has a year string or a null/whitespace. The files will be sorted accordding to the value of the FileYear " DisplayName="Check File to a string &quot;yyyy&quot;" sap:VirtualizedContainerService.HintSize="1923,1856" sap2010:WorkflowViewState.IdRef="Sequence_3">
+            <sap:WorkflowViewStateService.ViewState>
+              <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+              </scg:Dictionary>
+            </sap:WorkflowViewStateService.ViewState>
+            <Assign sap2010:Annotation.AnnotationText="Assign the year &quot;yyyy&quot; extracted from file to FileYear" DisplayName="Assign FileYear to File Strings" sap:VirtualizedContainerService.HintSize="1881,102" sap2010:WorkflowViewState.IdRef="Assign_3">
+              <Assign.To>
+                <OutArgument x:TypeArguments="x:String">[fileYear]</OutArgument>
+              </Assign.To>
+              <Assign.Value>
+                <InArgument x:TypeArguments="x:String">[System.Text.RegularExpressions.Regex.Match(file.ToString,"\d{4}(?=\.)").ToString]</InArgument>
+              </Assign.Value>
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+            </Assign>
+            <If sap2010:Annotation.AnnotationText="Checks if the string FileYear containts the \{4} four digits &quot;yyyy&quot; of the year (ie. 2018,2019,etc) or if it is a null/whitespace (ie. if id does not containt the 4 digits)" Condition="[String.IsNullOrWhiteSpace(fileYear)]" DisplayName="If File_Year" sap:VirtualizedContainerService.HintSize="1881,1591" sap2010:WorkflowViewState.IdRef="If_1">
+              <sap:WorkflowViewStateService.ViewState>
+                <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                  <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                </scg:Dictionary>
+              </sap:WorkflowViewStateService.ViewState>
+              <If.Then>
+                <Sequence sap2010:Annotation.AnnotationText="Assign variable FileWithNoYear to the file name, assign PathToProjectFolder to the path Desktop on the machine.  It will first check if the folder NoYearFiles exists, it not it will create it and move the files &quot;FileWithNoYear&quot; into the folder &quot;NoYearFiles&quot;" DisplayName="Sorting the files with an empty/null/whitespace FileYear" sap:VirtualizedContainerService.HintSize="897,1412" sap2010:WorkflowViewState.IdRef="Sequence_4">
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign DisplayName="Assign FileWithNoYear to file name" sap:VirtualizedContainerService.HintSize="855,60" sap2010:WorkflowViewState.IdRef="Assign_6">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[fileWithNoYear]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[file.ToString]</InArgument>
+                    </Assign.Value>
+                  </Assign>
+                  <Assign sap2010:Annotation.AnnotationText="Assign NewFolderPath to a path to the Project folder" DisplayName="Assign NewFolderPath to a Path" sap:VirtualizedContainerService.HintSize="855,102" sap2010:WorkflowViewState.IdRef="Assign_4">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[pathToProjectFolder]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[in_Desktop+"\Sorting_Annual_Reports_Project"]</InArgument>
+                    </Assign.Value>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Assign>
+                  <Assign sap2010:Annotation.AnnotationText="Assign NewFolder to the name of today's date. PathToProjectFolder is used here to shorten the path name" DisplayName="Assign NewFolder to a new name" sap:VirtualizedContainerService.HintSize="855,121" sap2010:WorkflowViewState.IdRef="Assign_5">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[noYearFilesFolder]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String" xml:space="preserve">[Path.Combine(PathToProjectFolder, DateTime.Today.ToString("MMddyyyy")
+)]</InArgument>
+                    </Assign.Value>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Assign>
+                  <ui:PathExists sap2010:Annotation.AnnotationText="Returns a Boolean value True/False that checks whether a new folder to store files without dates has been created or not" DisplayName="Path To NoYearFiles Exists" Exists="[folderExits]" sap:VirtualizedContainerService.HintSize="855,146" sap2010:WorkflowViewState.IdRef="PathExists_1" Path="[noYearFilesFolder]" PathType="Folder">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:PathExists>
+                  <If sap2010:Annotation.AnnotationText="The condition will check whether a path to the NoYearFiles exists (ie. if FolderExists is True/False). If the condition is true it will move the files from the FileNames folder into the NoYearFiles folder. Otherwise it will create the NoYearFiles folder and start moving the files." Condition="[folderExits]" DisplayName="If NewFolder" sap:VirtualizedContainerService.HintSize="855,689" sap2010:WorkflowViewState.IdRef="If_2">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <If.Then>
+                      <ui:MoveFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Moves Files from the Extracted File in the Project Folder to a new file with Files without the name &quot;yyyy&quot;" Destination="[noYearFilesFolder]" DisplayName="Moving files without a year into NoYearFiles folder" sap:VirtualizedContainerService.HintSize="384,199" sap2010:WorkflowViewState.IdRef="MoveFile_1" Overwrite="True" Path="[fileWithNoYear]">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                      </ui:MoveFile>
+                    </If.Then>
+                    <If.Else>
+                      <Sequence sap2010:Annotation.AnnotationText="Creates a new folder and name it with today's date and move files wthout year or with empty strings to it" DisplayName="Create a new Folder for Files without date" sap:VirtualizedContainerService.HintSize="426,499" sap2010:WorkflowViewState.IdRef="Sequence_6">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:CreateDirectory ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Creates a new folder &quot;NewFolder&quot; to store Files without the year" DisplayName="Create NoYearFiles Folder" sap:VirtualizedContainerService.HintSize="384,126" sap2010:WorkflowViewState.IdRef="CreateDirectory_3" Path="[noYearFilesFolder]">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </ui:CreateDirectory>
+                        <ui:MoveFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Move Files without year from extracted folder to a new created foder named &quot;ddd-mm-yyyy&quot;" Destination="[noYearFilesFolder]" DisplayName="Moving files without a year into NoYearFiles folder" sap:VirtualizedContainerService.HintSize="384,199" sap2010:WorkflowViewState.IdRef="MoveFile_2" Overwrite="True" Path="[fileWithNoYear]">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </ui:MoveFile>
+                      </Sequence>
+                    </If.Else>
+                  </If>
+                </Sequence>
+              </If.Then>
+              <If.Else>
+                <Sequence sap2010:Annotation.AnnotationText="Moves the files that with 4 digis of the year FileYear &quot;yyyy&quot;. Assign the variable &quot;WithYearFiles&quot; to year FileYear &quot;yyyy&quot;. Assign variable FileWithYear to file name file.String. Check if the folder with the name WithYearFiles (eg. 2020) exists and move fileWithYear into it otherwise create it and move fileWithYear into it. " DisplayName="Moving Files with Year" sap:VirtualizedContainerService.HintSize="939,1224" sap2010:WorkflowViewState.IdRef="Sequence_5">
+                  <Sequence.Variables>
+                    <Variable x:TypeArguments="x:Boolean" Name="folderExists" />
+                  </Sequence.Variables>
+                  <sap:WorkflowViewStateService.ViewState>
+                    <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                      <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                      <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                    </scg:Dictionary>
+                  </sap:WorkflowViewStateService.ViewState>
+                  <Assign sap2010:Annotation.AnnotationText="WithYearFiles will be assigned to the path of a file in the project folder." DisplayName="Assign WithYearFiles to File path" sap:VirtualizedContainerService.HintSize="897,102" sap2010:WorkflowViewState.IdRef="Assign_9">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[withYearFilesFolder]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[pathToProjectFolder+"\"+fileYear]</InArgument>
+                    </Assign.Value>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Assign>
+                  <Assign sap2010:Annotation.AnnotationText="Asssigns the variable FileWithYear to the name of the file in the Folder" DisplayName="Assign FileWithYear to file name" sap:VirtualizedContainerService.HintSize="897,102" sap2010:WorkflowViewState.IdRef="Assign_8">
+                    <Assign.To>
+                      <OutArgument x:TypeArguments="x:String">[fileWithYear]</OutArgument>
+                    </Assign.To>
+                    <Assign.Value>
+                      <InArgument x:TypeArguments="x:String">[file.ToString]</InArgument>
+                    </Assign.Value>
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </Assign>
+                  <ui:PathExists sap2010:Annotation.AnnotationText="Checks if the Folder named WithYearFiles &quot;yyyy&quot; exists and returns a boolean FolderExists" DisplayName="Path To WithYearFiles Exists" Exists="[folderExists]" sap:VirtualizedContainerService.HintSize="897,131" sap2010:WorkflowViewState.IdRef="PathExists_2" Path="[withYearFilesFolder]" PathType="Folder">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                  </ui:PathExists>
+                  <If sap2010:Annotation.AnnotationText="Checks whether folder named WithYearFiles (ie. 2018, 2019, etc) exists and move the files with &quot;yyyy&quot; FileWithYear into the folder that corresponds with the  WithYearFiles folder. (ie. if the file name contians the FileYear = 2018 it will be moved into a folder WithYearFiles = 2018). If th folder with the corresponding year does not exist, it will create it and move the file with the corresponding year." Condition="[folderExists]" DisplayName="If WithYearFiles " sap:VirtualizedContainerService.HintSize="897,635" sap2010:WorkflowViewState.IdRef="If_3">
+                    <sap:WorkflowViewStateService.ViewState>
+                      <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                        <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                      </scg:Dictionary>
+                    </sap:WorkflowViewStateService.ViewState>
+                    <If.Then>
+                      <Sequence DisplayName="Move FileWithYear into WithYearFiles folder" sap:VirtualizedContainerService.HintSize="426,280" sap2010:WorkflowViewState.IdRef="Sequence_16">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:MoveFile ContinueOnError="{x:Null}" sap2010:Annotation.AnnotationText="Moves files FileWithYear to folder WithYearFiles" Destination="[withYearFilesFolder]" DisplayName="Move FileWithYear To WithYearFiles Folder" sap:VirtualizedContainerService.HintSize="384,188" sap2010:WorkflowViewState.IdRef="MoveFile_3" Overwrite="True" Path="[fileWithYear]">
+                          <sap:WorkflowViewStateService.ViewState>
+                            <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                              <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                            </scg:Dictionary>
+                          </sap:WorkflowViewStateService.ViewState>
+                        </ui:MoveFile>
+                      </Sequence>
+                    </If.Then>
+                    <If.Else>
+                      <Sequence sap2010:Annotation.AnnotationText="Creates a new folder named WithYearFiles, assign it the name corresponding to the file year &quot;yyyy&quot; and move files FileWithYear corresponding to it into it." DisplayName="WithYearFiles Folder" sap:VirtualizedContainerService.HintSize="426,430" sap2010:WorkflowViewState.IdRef="Sequence_7">
+                        <sap:WorkflowViewStateService.ViewState>
+                          <scg:Dictionary x:TypeArguments="x:String, x:Object">
+                            <x:Boolean x:Key="IsExpanded">True</x:Boolean>
+                            <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+                          </scg:Dictionary>
+                        </sap:WorkflowViewStateService.ViewState>
+                        <ui:CreateDirectory ContinueOnError="{x:Null}" DisplayName="Create WithYearFiles Folder" sap:VirtualizedContainerService.HintSize="384,84" sap2010:WorkflowViewState.IdRef="CreateDirectory_4" Path="[pathToProjectFolder+&quot;\&quot;+fileYear]" />
+                        <ui:MoveFile ContinueOnError="{x:Null}" Destination="[withYearFilesFolder]" DisplayName="Move FileWithYear To WithYearFiles Folder" sap:VirtualizedContainerService.HintSize="384,157" sap2010:WorkflowViewState.IdRef="MoveFile_4" Overwrite="True" Path="[fileWithYear]" />
+                      </Sequence>
+                    </If.Else>
+                  </If>
+                </Sequence>
+              </If.Else>
+            </If>
+          </Sequence>
+        </ActivityAction>
+      </ui:ForEach.Body>
+      <sap:WorkflowViewStateService.ViewState>
+        <scg:Dictionary x:TypeArguments="x:String, x:Object">
+          <x:Boolean x:Key="IsAnnotationDocked">True</x:Boolean>
+        </scg:Dictionary>
+      </sap:WorkflowViewStateService.ViewState>
+    </ui:ForEach>
+  </Sequence>
+</Activity>
